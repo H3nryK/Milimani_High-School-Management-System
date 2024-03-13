@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %}Marks Room || Milimani High School{% endblock title %}
+
+{% block content %}
+
+{% if user.is_authenticated %}
+<main id="main" class="main">
+
+    <!--Page title-->
+    <div class="pagetitle">
+        <h1>Student's List</h1>
+        <nav>
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href='{% url "dashboard" %}'>Home</a></li>
+            <li class='breadcrumb-item'>Exam</li>
+            <li class="breadcrumb-item active">Marks Room</li>
+          </ol>
+        </nav>
+      </div><!-- End Page Title -->
+  
+        <!--Profile Section-->
+        <section class="section profile">
+          <div class="row">
+
+            <div class="col-xl-12">
+
+              <div class="card" id='studentList'  data-aos="fade-up" data-aos-delay="100">
+                <div class="card-body">
+                {% if selected_class and selected_subject and selected_exam %}
+                <h5 class="card-title">{{selected_class.name}} - {{ selected_subject.name }} - {{selected_exam }}</h5>
+
+                {% if students %}
+                <form method='post' action='{% url "exam_marks" selected_class.id selected_subject.id selected_exam.id %}'>
+                {% csrf_token %}
+
+                  <table class="table table-striped">
+                    <thead>
+                      <tr>
+                        <th scope="col">Name</th>
+                        <th>Adm No.</th>
+                        <th>Marks</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% for student in students %}
+                      <tr>
+                        <td>{{ student.full_name }}</td>
+                        <td>{{ student.adm_no }}</td>
+                        <td><input type='number' name='marks'></td>
+                      </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+                  <button class='btn btn-primary' type="submit"> Submit</button>
+                </form>
+                {% else %}
+                <p>No Students found for the selcted criteria</p>
+                {% endif %}
+                {% endif %}
+
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+</main><!--End #main-->
+
+<!-- ======= Footer ======= -->
+<footer id="footer" class="footer">
+<div class="copyright">
+&copy; Copyright <strong><span>Milimani High School</span></strong>. All Rights Reserved
+</div>
+<div class="credits">
+  Designed by Milimani High ICT
+</div>
+</footer><!-- End Footer -->
+
+<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+
+{% else %}
+
+<!--error Section-->
+<section id="error" class="error d-flex align-items-center">
+
+<div class="error-info" data-aos="fade-down" data-aos-delay="300">
+<h1>404</h1>
+<p>Oops! you are on the wrong way buddy.</p>
+<div class="logo">
+    <img src="{% static 'img/IMG_5688-Edit.png' %}" alt="Milimani High School">
+</div>
+<h2>Milimani High School</h2>
+</div>
+
+</section><!--End login section-->
+
+{% endif %}
+
+{% endblock content %}

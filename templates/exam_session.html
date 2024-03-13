@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %}Exam sessions || Milimani High School{% endblock title %}
+
+{% block content %}
+
+{% if user.is_authenticated %}
+<main id="main" class="main">
+
+    <!--Page title-->
+    <div class="pagetitle">
+        <h1>Create Exam Session</h1>
+        <nav>
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href='{% url "dashboard" %}'>Home</a></li>
+            <li class="breadcrumb-item active">Create Exam Session</li>
+          </ol>
+        </nav>
+      </div><!-- End Page Title -->
+  
+      <!--Dashboard section-->
+      <div class="container">
+
+        <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
+          <div class="container">
+            <div class="row justify-content-center">
+              <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
+  
+                <div class="card mb-3">
+  
+                  <div class="card-body" data-aos="fade-up" data-aos-delay="100">
+  
+                    <div class="pt-4 pb-2">
+                      <h5 class="card-title text-center pb-0 fs-4">Create an Exam Session</h5>
+                    </div>
+  
+                    <form class="row g-3 needs-validation" action='{% url "exam_session" %}' method='post'>
+                      {% csrf_token %}
+                      {{ exam_session_form}}<br>
+                      <div class="col-12">
+                        <button class="btn btn-primary w-100" type="submit">Create Session</button>
+                      </div>
+                    </form>
+  
+                  </div>
+                </div>
+  
+              </div>
+              <div class="col-md-6 d-flex flex-column align-items-center justify-content-center">
+
+                <div class="card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="card-body">
+                      <h5 class="card-title">Pending User Accounts</h5>
+        
+                      <!-- Table with hoverable rows -->
+                      <table class="table table-hover">
+                        <thead>
+                          <tr>
+                            <th scope="col">session</th>
+                            <th scope="col">Type</th>
+                            <th scope='col'>Created on</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {% for exam_session in exam_sessions %}
+                          <tr>
+                            <td>{{ exam_session.session }}</td>
+                            <td>{{ exam_session.type }}</td>
+                            <td>{{ exam_session.timestamp }}</td>
+                          </tr>
+                          {% empty %}
+                          No Exam Session started
+                          {% endfor %}
+                        </tbody>
+                      </table>
+                      <!-- End Table with hoverable rows -->
+        
+                    </div>
+                  </div>
+
+              </div>
+            </div>
+          </div>
+  
+        </section>
+  
+      </div>
+
+</main><!--End #main-->
+
+<!-- ======= Footer ======= -->
+<footer id="footer" class="footer">
+    <div class="copyright">
+        &copy; Copyright <strong><span>Milimani High School</span></strong>. All Rights Reserved
+    </div>
+    <div class="credits">
+      Designed by Milimani High ICT
+    </div>
+</footer><!-- End Footer -->
+
+<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+
+{% else %}
+
+  <!--error Section-->
+  <section id="error" class="error d-flex align-items-center">
+      
+      <div class="error-info" data-aos="fade-down" data-aos-delay="300">
+          <h1>404</h1>
+          <p>Oops! you are on the wrong way buddy.</p>
+          <div class="logo">
+              <img src="{% static 'img/IMG_5688-Edit.png' %}" alt="Milimani High School">
+          </div>
+          <h2>Milimani High School</h2>
+      </div>
+
+  </section><!--End login section-->
+
+{% endif %}
+
+{% endblock content %}

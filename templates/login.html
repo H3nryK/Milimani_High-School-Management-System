@@ -1,0 +1,87 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>{% block title %}Portal || Milimani High School{% endblock title %}</title>
+  <meta name="description" content="The best place to embrace your inner hero through innovations &amp; the digital evolution of education.">
+  <meta name="keywords" content="Milimani High School">
+  <meta name="keywords" content="Milimani High School portal">
+  <meta name="keywords" content="Milimani High portal">
+  <meta name="keywords" content="Schools in Naivasha">
+  <meta name="keywords" content="Schools in Nakuru">
+  <meta name="keywords" content="best school in naivasha">
+  <meta name="keywords" content="Naivasha Schools">
+  <meta name="keywords" content="Day Schools">
+  <meta name="keywords" content="Milimani Secondary School">
+  <meta name="keywords" content="Milimani Secondary School portal">
+  <meta name="keywords" content="Milimani Secondary portal">
+  
+  <!-- Favicons -->
+  <link href="{% static 'img/IMG_5688-Edit.png' %}" rel="icon">
+  <link href="{% static 'img/IMG_5688-Edit.png' %}" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600;1,700&family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Raleway:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+
+  
+  <!-- Vendor CSS Files -->
+  <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/aos/aos.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="{% static 'css/main.css' %}" rel="stylesheet">
+
+</head>
+
+<body class="page-index">
+
+  <section id="login" class="login d-flex align-items-center">
+
+    <div class="container">
+        <div class="row">
+
+            <div class="col-xl-4">
+                <h1 data-aos="fade-down" data-aos-delay="200">Milimani High School</h1>
+                
+                <div class="logo" data-aos="fade-left" data-aos-delay="400">
+                    <img src="{% static 'img/IMG_5688-Edit.png' %}" alt="Milimani High School Logo">
+                </div>
+
+                <form action="{% url 'login' %}" method="post" data-aos="fade-up"  data-aos-delay="600">
+                    {% csrf_token %}
+                    <input type="text" name="username" placeholder="Enter Username" required>
+                    <input type="password" name="password" placeholder="Enter Password" required>
+                    <button type="submit" value="login">Let's start</button>
+                    <br>
+                    <hr>
+                    <p>&copy;2024 Milimani High School</p>
+                </form>
+
+            </div>
+
+        </div>
+    </div>
+
+  </section><!--End login section-->
+  
+  <div id="preloader"></div>
+
+  <!-- Vendor JS Files -->
+  <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'vendor/aos/aos.js' %}"></script>
+  <script src="{% static 'vendor/apexcharts/apexcharts.min.js' %}"></script>
+
+  <!-- Template Main JS File -->
+  <script src="{% static 'js/main.js' %}"></script>
+
+</body>
+
+</html>

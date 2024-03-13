@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %}Dashboard || Milimani High School{% endblock title %}
+
+{% block content %}
+
+{% if user.is_authenticated %}
+<main id="main" class="main">
+
+    <!--Page title-->
+    <div class="pagetitle">
+        <h1>{{ user.username }}'s Dashboard</h1>
+        <nav>
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href='{% url "dashboard" %}'>Home</a></li>
+            <li class="breadcrumb-item active">Dashboard</li>
+          </ol>
+        </nav>
+      </div><!-- End Page Title -->
+
+      <!--Dashboard section-->
+      <section class="section dashboard">
+        <div class="row">
+
+          {% for course in courses %}
+          <div class="card col-lg-6" data-aos="fade-up" data-aos-delay="100">
+            <div class="card-body">
+              <h1 class="card-title">{{ course.title }}</h1>
+              <p>{{course.description}}</p>
+              <p>Created for {{course.session}} on {{course.start}} for {{course.class_selected}} under {{course.subject}} subject.</p>
+              {% if request.user.is_admin %}
+              <div class="col-12">
+                <a href="{% url 'edit_course' course.id %}" class="btn btn-sm btn-warning">Edit</a>
+              </div>
+              <div class="col-12">
+                <a href="{% url 'delete_course' course.id %}" class="btn btn-sm btn-danger">Delete</a>
+              </div>
+              {% endif %}
+            </div>
+          </div><!-- End Default Card -->
+          {% endfor %}
+  
+        </div>
+      </section><!--End Dashboard section-->
+</main><!--End #main-->
+
+<!-- ======= Footer ======= -->
+<footer id="footer" class="footer">
+    <div class="copyright">
+        &copy; Copyright <strong><span>Milimani High School</span></strong>. All Rights Reserved
+    </div>
+    <div class="credits">
+      Designed by Milimani High ICT
+    </div>
+</footer><!-- End Footer -->
+
+<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+{% else %}
+
+<!--error Section-->
+<section id="error" class="error d-flex align-items-center">
+    
+    <div class="error-info" data-aos="fade-down" data-aos-delay="300">
+        <h1>404</h1>
+        <p>Oops! you are on the wrong way buddy.</p>
+        <div class="logo">
+            <img src="{% static 'img/IMG_5688-Edit.png' %}" alt="Milimani High School">
+        </div>
+        <h2>Milimani High School</h2>
+    </div>
+
+</section><!--End login section-->
+
+{% endif %}
+
+{% endblock content %}

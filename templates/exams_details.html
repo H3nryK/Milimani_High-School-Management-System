@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %}Exam Details || Milimani High School{% endblock title %}
+
+{% block content %}
+
+{% if user.is_authenticated %}
+    <main id="main" class="main">
+
+      <!--Page title-->
+      <div class="pagetitle">
+        <h1>Student's List</h1>
+        <nav>
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href='{% url "dashboard" %}'>Home</a></li>
+            <li class='breadcrumb-item'>Exam</li>
+            <li class="breadcrumb-item active">Exam Details</li>
+          </ol>
+        </nav>
+      </div><!-- End Page Title -->
+  
+        <!--Profile Section-->
+        <section class="section profile">
+          <div class="row">
+            <div class="col-xl-8">
+
+              <div class="card" id='studentList' data-aos="fade-up" data-aos-delay="100">
+                <div class="card-body">
+                <h5 class="card-title">{{exam.type}} - {{ exam.session }} for {{ student_profile.full_name }}</h5>
+
+                  <table class="table table-striped">
+                    <thead>
+                      <tr>
+                        <th scope="col">Subject</th>
+                        <th>Marks</th>
+                        <th>Grade</th>
+                        <th>Remark</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    {% for mark in marks_for_exam %}
+                      <tr>
+                        <td>{{ mark.subject.name }}</td>
+                        <td>{{ mark.marks }}</td>
+                        <td>{{ mark.grade }}</td>
+                        <td>{{ mark.remark }}</td>
+                      </tr>
+                    {% endfor %}
+                      <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td><strong>Total Marks:</strong></td>
+                        <td>{{ total_marks }}</td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td><strong>Average Marks:</strong></td>
+                        <td>{{ average_marks }}</td>
+                        <td>{{ grade }}</td>
+                        <td></td>
+                      </tr>
+                    </tbody>
+                  </table>
+
+                  <a href='{% url "generate_report_pdf" exam.id user.id %}' class='btn btn-primary'>Download report</a>
+
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+    </main><!--End #main-->
+
+<!-- ======= Footer ======= -->
+<footer id="footer" class="footer">
+<div class="copyright">
+&copy; Copyright <strong><span>Milimani High School</span></strong>. All Rights Reserved
+</div>
+<div class="credits">
+  Designed by Milimani High ICT
+</div>
+</footer><!-- End Footer -->
+
+<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+
+{% else %}
+
+<!--error Section-->
+<section id="error" class="error d-flex align-items-center">
+
+<div class="error-info" data-aos="fade-down" data-aos-delay="300">
+<h1>404</h1>
+<p>Oops! you are on the wrong way buddy.</p>
+<div class="logo">
+    <img src="{% static 'img/IMG_5688-Edit.png' %}" alt="Milimani High School">
+</div>
+<h2>Milimani High School</h2>
+</div>
+
+</section><!--End login section-->
+
+{% endif %}
+
+{% endblock content %}

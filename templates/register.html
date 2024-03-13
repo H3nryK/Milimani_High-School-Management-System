@@ -1,0 +1,160 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %}Register user || Milimani High School{% endblock title %}
+
+{% block content %}
+
+{% if user.is_authenticated %}
+
+<main id="main" class="main">
+
+    <!--Page title-->
+    <div class="pagetitle">
+        <h1>Create User Account</h1>
+        <nav>
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href='{% url "dashboard" %}'>Home</a></li>
+            <li class="breadcrumb-item active">Create User Account</li>
+          </ol>
+        </nav>
+      </div><!-- End Page Title -->
+  
+      <!--Dashboard section-->
+      <div class="container">
+
+        <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
+          <div class="container">
+            <div class="row justify-content-center">
+              <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
+  
+                <div class="card mb-3" data-aos="fade-up" data-aos-delay="100">
+  
+                  <div class="card-body">
+  
+                    <div class="pt-4 pb-2">
+                      <h5 class="card-title text-center pb-0 fs-4">Create an Account</h5>
+                      <p class="text-center small">Enter details to create account</p>
+                    </div>
+  
+                    <form class="row g-3 needs-validation" action='{% url "register" %}' method='post'>
+                      {% csrf_token %}
+                      {{ register_form }}
+  
+                      <div class="col-12">
+                        <label for="category" class="form-label">Category:</label>
+                        <select class="form-select" id='category' name='category' required>
+                          <option value='student'>Student</option>
+                          <option value='teacher'>teacher</option>
+                          <option value='class_teacher'>class teacher</option>
+                          <option value='finance'>Finance</option>
+                          <option value='admin'>Admin</option>
+                        </select>
+                      </div>
+  
+                      <div class="col-12">
+                        <button class="btn btn-primary w-100" type="submit">Create Account</button>
+                      </div>
+                    </form>
+  
+                  </div>
+                </div>
+  
+              </div>
+              <div class="col-md-6 d-flex flex-column align-items-center justify-content-center">
+
+                <div class="card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="card-body">
+                      <h5 class="card-title">Pending User Accounts</h5>
+        
+                      <!-- Table with hoverable rows -->
+                      <table class="table table-hover">
+                        <thead>
+                          <tr>
+                            <th scope="col">Username</th>
+                            <th scope="col">Category</th>
+                            <th scope="col">Action</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {% for user in pending_users %}
+                          <tr>
+                            <td>{{ user.username }}</td>
+                            <td>
+                              {% if user.is_student %}
+                              Student
+                              {% elif user.is_teacher %}
+                              Teacher
+                              {% elif user.is_class_teacher %}
+                              Class Teacher
+                              {% elif user.is_finance %}
+                              Finance
+                              {% elif user.is_admin %}
+                              Admin
+                              {% endif %}
+                            </td>
+                            <td>
+                              {% if user.is_student %}
+                              <a href='{% url "student_profile" user.id %}'>Update Profle</a>
+                              {% elif user.is_teacher %}
+                              <a href='{% url "teacher_profile" user.id %}'>Update Profle</a>
+                              {% elif user.is_class_teacher %}
+                              <a href='{% url "class_teacher_profile" user.id %}'>Update Profle</a>
+                              {% elif user.is_finance %}
+                              <a href='{% url "finance_profile" user.id %}'>Update Profle</a>
+                              {% elif user.is_admin %}
+                              <a href='{% url "admin_profile" user.id %}'>Update Profle</a>
+                              {% endif %}
+                            </td>
+                          </tr>
+                          {% empty %}
+                          Everyone is updated
+                          {% endfor %}
+                        </tbody>
+                      </table>
+                      <!-- End Table with hoverable rows -->
+        
+                    </div>
+                  </div>
+
+              </div>
+            </div>
+          </div>
+  
+        </section>
+  
+      </div>
+
+</main><!--End #main-->
+
+<!-- ======= Footer ======= -->                                                                                                                                                                     
+<footer id="footer" class="footer">
+    <div class="copyright">
+        &copy;2024 Copyright <strong><span>Milimani High School</span></strong>. All Rights Reserved
+    </div>
+    <div class="credits">
+        Designed by Milimani High ICT
+    </div>
+</footer><!-- End Footer -->
+
+<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+{% else %}
+
+<section id="error" class="error d-flex align-items-center">
+            
+    <div class="error-info" data-aos="fade-down" data-aos-delay="300">
+        <h1>404</h1>
+        <p>Oops! you are on the wrong way buddy.</p>
+        <div class="logo">
+            <img src="{% static 'img/IMG_5688-Edit.png' %}" alt="Milimani High School">
+        </div>
+        <h2>Milimani High School</h2>
+    </div>
+
+</section><!--End login section-->
+
+{% endif %}
+
+{% endblock content %}

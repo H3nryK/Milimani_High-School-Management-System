@@ -1,0 +1,236 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %}{{ user.username }}'s profile || Milimani High School{% endblock title %}
+
+{% block content %}
+<main id="main" class="main">
+
+    <!--Page title-->
+    <div class="pagetitle">
+        <h1>{{ user.username }}'s Profile</h1>
+        <nav>
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href='{% url "dashboard" %}'>Home</a></li>
+            <li class="breadcrumb-item">Users</li>
+            <li class="breadcrumb-item active">Student Profile</li>
+          </ol>
+        </nav>
+    </div><!-- End Page Title -->
+  
+      <!--Profile Section-->
+      <section class="section profile">
+        <div class="row">
+          <div class="col-xl-4">
+  
+            <div class="card" data-aos="fade-right" data-aos-delay="100">
+              <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+                <img src="{% static 'img/IMG-20230825-WA0001.jpg' %}" alt="Profile" class="rounded-circle">
+                <h2>{{ user.username }}</h2>
+                {% if user.is_student %}
+                <h6>Student</h6>
+                {% elif user.is_teacher %}
+                <h6>Teacher</h6>
+                {% elif user.is_class_teacher %}
+                <h6>Class Teacher</h6>
+                {% elif user.is_finance %}
+                <h6>Finance</h6>
+                {% elif user.is_admin %}
+                <h6>Admin</h6>
+                {% endif %}
+                {% if student_profile.user.update_status == 'updated' %}
+                <span class="badge bg-success"><i class="bi bi-check-circle me-1"></i> Updated</span>
+                {% elif student_profile.user.update_status == 'pending' %}
+                <span class="badge bg-warning text-dark"><i class="bi bi-exclamation-triangle me-1"></i> Pending Update</span>
+                {% endif %}
+            </div>
+        </div>
+
+      </div>
+
+      <div class="col-xl-8">
+
+        <div class="card" data-aos="fade-left" data-aos-delay="100">
+          <div class="card-body pt-3">
+            <!-- Bordered Tabs -->
+            <ul class="nav nav-tabs nav-tabs-bordered">
+
+              <li class="nav-item">
+                <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#profile-overview">Overview</button>
+              </li>
+
+              <li class="nav-item">
+                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-edit">Edit Profile</button>
+              </li>
+
+            </ul>
+            <div class="tab-content pt-2">
+
+              <div class="tab-pane fade show active profile-overview" id="profile-overview">
+
+                <a href='{% url "generate_profile_pdf" user.id %}' class='btn btn-primary'>Download Profile</a>
+         
+                <h5 class="card-title">Profile Details</h5>                  
+                <div class="row">
+                  <div class="col-lg-3 col-md-4 label ">Full Name</div>
+                  <div class="col-lg-9 col-md-8">{{ student_profile.full_name }}</div>
+                </div>
+                                     
+                <div class="row">
+                  <div class="col-lg-3 col-md-4 label ">Date of Birth</div>
+                  <div class="col-lg-9 col-md-8">{{ student_profile.dob }}</div>
+                </div>
+                                     
+                <div class="row">
+                  <div class="col-lg-3 col-md-4 label ">Year of Admission</div>
+                  <div class="col-lg-9 col-md-8">{{ student_profile.yoa }}</div>
+                </div>
+
+                <div class="row">
+                  <div class="col-lg-3 col-md-4 label ">Contact</div>
+                  <div class="col-lg-9 col-md-8">{{ student_profile.contact }}</div>
+                </div>
+                                     
+                <div class="row">
+                  <div class="col-lg-3 col-md-4 label ">Admission Number</div>
+                  <div class="col-lg-9 col-md-8">{{ student_profile.adm_no }}</div>
+                </div>
+
+                <div class="row">
+                  <div class="col-lg-3 col-md-4 label">subjects</div>
+                  <ul class="col-lg-9 col-md-8">
+                    {% for subject in student_profile.subjects.all %}
+                  <li>{{ subject.name }}</li>
+                   {% endfor %}
+                  </ul>
+                </div>
+
+                <div class="row">
+                  <div class="col-lg-3 col-md-4 label">class</div>
+                  <div class="col-lg-9 col-md-8">{{ student_profile.user_class }}</div>
+                </div>
+                
+                <div class="row">
+                  <div class="col-lg-3 col-md-4 label">class Teacher</div>
+                  <div class="col-lg-9 col-md-8">{{ class_teacher_name }}</div>
+                </div>
+
+                <div class='row'>
+                  
+                <div class="col-lg-3 col-md-4 label">Examinations</div>
+                {% if student_exams %}
+                <ul class="col-lg-9 col-md-8">
+                  {% for exam in student_exams %}
+                  <li><a href='{% url "exam_details" exam.id user.id %}'>{{ exam.type }} - {{ exam.session }}</a></li>
+                  {% endfor %}
+                </ul>
+                {% else %}
+                <p class="col-lg-9 col-md-8">No exams available</p>
+                {% endif %}
+                </div>
+
+                <div class="row">
+
+                  <!-- Sales Card -->
+                  <div class="col-xxl-4 col-md-6">
+                    <div class="card info-card sales-card">
+      
+                      <div class="card-body">
+                        <h5 class="card-title">Score <span>
+      
+                        <div class="d-flex align-items-center">
+                          <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                            <i class="bi bi-cart"></i>
+                          </div>
+                          <div class="ps-3">
+                            <h6>-- points</h6>
+                            <span class="text-success small pt-1 fw-bold">--</span> <span class="text-muted small pt-2 ps-1">--</span>
+      
+                          </div>
+                        </div>
+                      </div>
+      
+                    </div>
+                  </div><!-- End Sales Card -->
+      
+                  <!-- Results Card -->
+                  <div class="col-xxl-4 col-md-6">
+                    <div class="card info-card revenue-card">
+      
+                      <div class="card-body">
+                        <h5 class="card-title">Fee Balance</h5>
+                                          
+                        <div class="d-flex align-items-center">
+                            <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                              <i class="bi bi-currency-dollar"></i>
+                            </div>
+                            <div class="ps-3">
+                                <h6>Ksh {{student_profile.fee_balance}}</h6>
+                                                  
+                            </div>
+                        </div>
+                      </div>
+      
+                    </div>
+                  </div><!-- End Revenue Card -->
+      
+                  <!-- Reports -->
+                  <div class="col-12">
+                    <div class="card">
+      
+                      <div class="card-body">
+                        <h5 class="card-title">Academic Graph</h5>
+
+                        {% if performance_graph %}
+                        <div  style="max-width: 100%; overflow: hidden;">
+                          <img src="data:image/png;base64,{{performance_graph}}" style='width: 100%; height: auto;'>
+                        </div>
+                        {% endif %}
+  
+                        <!-- End Graph -->
+      
+                      </div>
+      
+                    </div>
+                  </div><!-- End Reports -->
+      
+                </div>
+
+              </div>
+
+              <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
+
+                {% if student_profile.user.update_status == 'pending' %}
+                <!-- Profile Edit Form -->
+                <form action='{% url "student_profile" user.id %}' method='post' enctype='multipart/form-data'>
+                  {% csrf_token %}
+                  {{stu_form}}<br>
+                  <button type="submit" class="btn btn-primary">Update</button>
+                </form><!-- End Profile Edit Form -->
+                {% endif %}
+              </div>
+            </div><!-- End Bordered Tabs -->
+          
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+</main><!--End #main-->
+
+<!-- ======= Footer ======= -->
+<footer id="footer" class="footer">
+<div class="copyright">
+  &copy; Copyright <strong><span>Milimani High School</span></strong>. All Rights Reserved
+</div>
+<div class="credits">
+  Designed by Milimani High ICT
+</div>
+</footer><!-- End Footer -->
+
+<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+{% endblock content %}

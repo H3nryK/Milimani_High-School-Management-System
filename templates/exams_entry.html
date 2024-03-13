@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %}Exam Room || Milimani High School{% endblock title %}
+
+{% block content %}
+
+{% if user.is_authenticated %}
+<main id="main" class="main">
+
+    <!--Page title-->
+    <div class="pagetitle">
+        <h1>Student's List</h1>
+        <nav>
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href='{% url "dashboard" %}'>Home</a></li>
+            <li class="breadcrumb-item active">Exam Room</li>
+          </ol>
+        </nav>
+      </div><!-- End Page Title -->
+  
+        <!--Profile Section-->
+        <section class="section profile">
+          <div class="row">
+            <div class="col-xl-4">
+    
+              <div class="card" data-aos="fade-up" data-aos-delay="100">
+                <div class="card-body">
+                  <h5 class="card-title">What List do you want {{ user.username }}?</h5>
+    
+                  <!-- Floating Labels Form -->
+                  <form class="row g-3" id='listForm' method='post' action='{% url "exam" %}'>
+                    {% csrf_token %}
+                    <div class="col-md-12">
+                      <div class="form-floating">
+                        <select class="form-select" id="class" aria-label="Class Name" name='class'>
+                          <option value=''>--- All Classes ---</option>
+                          {% for class in classes %}
+                          <option value="{{ class.id }}">{{ class.name }}</option>
+                          {% endfor %}
+                        </select>
+                        <label for="fclass">Class Name:</label>
+                      </div>
+                    </div>
+                    <div class="col-md-12">
+                      <div class="form-floating">
+                        <select class="form-select" id="subject" aria-label="Subject Name" name='subject'>
+                          <option value=''>--- All Subjects ---</option>
+                          {% for subject in subjects %}
+                          <option value="{{ subject.id }}">{{ subject.name }}</option>
+                          {% endfor %}
+                        </select>
+                        <label for="fclass">Subject Name:</label>
+                      </div><br>
+                      <div class="col-md-12">
+                        <div class="form-floating">
+                          <select class="form-select" id="class" aria-label="Exam Name" name='exam'>
+                            <option value=''>--- All Exams ---</option>
+                            {% for exam in exams %}
+                            <option value="{{ exam.id }}">{{ exam }}</option>
+                            {% endfor %}
+                          </select>
+                          <label for="class">Exam Name:</label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="text-center">
+                      <button type="submit" class="btn btn-primary">Generate List</button>
+                    </div>
+                  </form><!-- End floating Labels Form -->
+
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+</main><!--End #main-->
+
+<!-- ======= Footer ======= -->
+<footer id="footer" class="footer">
+<div class="copyright">
+&copy; Copyright <strong><span>Milimani High School</span></strong>. All Rights Reserved
+</div>
+<div class="credits">
+  Designed by Milimani High ICT
+</div>
+</footer><!-- End Footer -->
+
+<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+
+{% else %}
+
+<!--error Section-->
+<section id="error" class="error d-flex align-items-center">
+
+<div class="error-info" data-aos="fade-down" data-aos-delay="300">
+<h1>404</h1>
+<p>Oops! you are on the wrong way buddy.</p>
+<div class="logo">
+    <img src="{% static 'img/IMG_5688-Edit.png' %}" alt="Milimani High School">
+</div>
+<h2>Milimani High School</h2>
+</div>
+
+</section><!--End login section-->
+
+{% endif %}
+
+{% endblock content %}

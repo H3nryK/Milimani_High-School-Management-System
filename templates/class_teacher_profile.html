@@ -1,0 +1,185 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %}{{user.username}}'s Profile || Milimani High School{% endblock title %}
+
+{% block content %}
+<main id="main" class="main">
+
+    <!--Page title-->
+    <div class="pagetitle">
+        <h1>{{ user.username }}'s Profile</h1>
+        <nav>
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href='{% url "dahboard" %}'>Home</a></li>
+            <li class="breadcrumb-item">Users</li>
+            <li class="breadcrumb-item active">Class Teacher Profile</li>
+          </ol>
+        </nav>
+    </div><!-- End Page Title -->
+  
+      <!--Profile Section-->
+      <section class="section profile">
+        <div class="row">
+          <div class="col-xl-4">
+  
+            <div class="card"  data-aos="fade-up" data-aos-delay="100">
+              <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+  
+                <img src="{% static "img/IMG-20230825-WA0001.jpg" %}" alt="Profile" class="rounded-circle">
+                <h2>{{ user.username }}</h2>
+                {% if user.is_student %}
+                <h6>Student</h6>
+                {% elif user.is_teacher %}
+                <h6>Teacher</h6>
+                {% elif user.is_class_teacher %}
+                <h6>Class Teacher</h6>
+                {% elif user.is_finance %}
+                <h6>Finance</h6>
+                {% elif user.is_admin %}
+                <h6>Admin</h6>
+                {% endif %}
+                {% if class_teacher_profile.user.update_status == 'updated' %}
+                <span class="badge bg-success"><i class="bi bi-check-circle me-1"></i> Updated</span>
+                {% elif class_teacher_profile.user.update_status == 'pending' %}
+                <span class="badge bg-warning text-dark"><i class="bi bi-exclamation-triangle me-1"></i> Pending Update</span>
+                {% endif %}
+              </div>
+            </div>
+  
+          </div>
+  
+          <div class="col-xl-8">
+  
+            <div class="card"  data-aos="fade-up" data-aos-delay="100">
+              <div class="card-body pt-3">
+                <!-- Bordered Tabs -->
+                <ul class="nav nav-tabs nav-tabs-bordered">
+  
+                  <li class="nav-item">
+                    <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#profile-overview">Overview</button>
+                  </li>
+  
+                  <li class="nav-item">
+                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-edit">Edit Profile</button>
+                  </li>
+  
+                </ul>
+                <div class="tab-content pt-2">
+  
+                  <div class="tab-pane fade show active profile-overview" id="profile-overview">
+             
+                    <h5 class="card-title">Profile Details</h5>              
+                    <div class="row">
+                      <div class="col-lg-3 col-md-4 label ">Full Name</div>
+                      <div class="col-lg-9 col-md-8">{{ class_teacher_profile.title }}. {{ class_teacher_profile.full_name }}</div>
+                    </div>
+   
+                    <div class="row">
+                      <div class="col-lg-3 col-md-4 label ">contact</div>
+                      <div class="col-lg-9 col-md-8">{{ class_teacher_profile.contact }}</div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-lg-3 col-md-4 label ">Class</div>
+                      <div class="col-lg-9 col-md-8">{{ class_teacher_profile.class_T }}</div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-lg-3 col-md-4 label">Teaching Subjects</div>
+                      <ul class="col-lg-9 col-md-8">
+                        {% for selection in class_teacher_profile.selection.all %}
+                      <li>{{ selection }}</li>
+                       {% endfor %}
+                      </ul>
+                    </div>
+
+                    <div class="row">
+  
+                      <!-- Sales Card -->
+                      <div class="col-xxl-4 col-md-6">
+                        <div class="card info-card sales-card">
+          
+                          <div class="card-body">
+                            <h5 class="card-title">Class Score</h5>
+          
+                            <div class="d-flex align-items-center">
+                              <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                <i class="bi bi-cart"></i>
+                              </div>
+                              <div class="ps-3">
+                                <h6>-- points</h6>
+                                <span class="text-success small pt-1 fw-bold">--</span> <span class="text-muted small pt-2 ps-1">--</span>
+          
+                              </div>
+                            </div>
+                          </div>
+          
+                        </div>
+                      </div><!-- End Sales Card -->
+          
+                      <!-- Results Card -->
+                      <div class="col-xxl-4 col-md-6">
+                        <div class="card info-card revenue-card">
+          
+                          <div class="card-body">
+                            <h5 class="card-title">Class Fee Balance</h5>
+          
+                            <div class="d-flex align-items-center">
+                              <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                <i class="bi bi-currency-dollar"></i>
+                              </div>
+                              <div class="ps-3">
+                                <h6>--</h6>
+          
+                              </div>
+                            </div>
+                          </div>
+          
+                        </div>
+                      </div><!-- End Revenue Card -->
+          
+          
+                    </div>
+  
+                  </div>
+  
+                  <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
+
+                    {% if class_teacher_profile.user.update_status == 'pending' %}
+                    <!-- Profile Edit Form -->
+                    <form action='{% url "class_teacher_profile" user.id %}' method='post' enctype='multipart/form-data'>
+                      {% csrf_token %}
+                      {{class_teacher_form}} <br>                  
+                      <div class="text-center">
+                        <button type="submit" class="btn btn-primary">Update</button>
+                      </div>
+                    </form><!-- End Profile Edit Form -->
+                    {% endif %}
+                  </div>
+  
+                </div><!-- End Bordered Tabs -->
+  
+              </div>
+            </div>
+  
+          </div>
+        </div>
+      </section>
+
+</main><!--End #main-->
+
+<!-- ======= Footer ======= -->
+<footer id="footer" class="footer">
+    <div class="copyright">
+        &copy; Copyright <strong><span>Milimani High School</span></strong>. All Rights Reserved
+    </div>
+    <div class="credits">
+      Designed by Milimani High ICT
+    </div>
+</footer><!-- End Footer -->
+
+<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+{% endblock content %}

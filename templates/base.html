@@ -1,0 +1,437 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport">
+
+  <title>{% block title %}Portal || Milimani High School{% endblock title %}</title>
+  <meta name="description" content="The best place to embrace your inner hero through innovations &amp; the digital evolution of education.">
+  <meta name="keywords" content="Milimani High School">
+  <meta name="keywords" content="Milimani High School portal">
+  <meta name="keywords" content="Milimani High portal">
+  <meta name="keywords" content="Schools in Naivasha">
+  <meta name="keywords" content="Schools in Nakuru">
+  <meta name="keywords" content="best school in naivasha">
+  <meta name="keywords" content="Naivasha Schools">
+  <meta name="keywords" content="Day Schools">
+  <meta name="keywords" content="Milimani Secondary School">
+  <meta name="keywords" content="Milimani Secondary School portal">
+  <meta name="keywords" content="Milimani Secondary portal">
+  
+  <!-- Favicons -->
+  <link href="{% static 'img/IMG_5688-Edit.png' %}" rel="icon">
+  <link href="{% static 'img/IMG_5688-Edit.png' %}" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600;1,700&family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Raleway:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+
+  
+  <!-- Vendor CSS Files -->
+  <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/aos/aos.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="{% static 'css/main.css' %}" rel="stylesheet">
+
+</head>
+
+<body class="page-index">
+
+  <header id="header" class="header fixed-top d-flex align-items-center">
+
+    <div class="d-flex align-items-center justify-content-between">
+      <a href='{% url "dashboard" %}' class="logo d-flex align-items-center">
+        <img src="{% static 'img/IMG_5688-Edit.png' %}" alt="Milimani High school logo">
+        <span class="d-none d-lg-block">Milimani</span>
+      </a>
+      <i class="bi bi-list toggle-sidebar-btn"></i>
+    </div><!-- End Logo -->
+    
+    {% if user.is_student %}
+    {# Hide the searchh bar for student.#}
+    {% else %}
+    <div class="search-bar">
+      <form class="search-form d-flex align-items-center" method="POST" action={% url "search_student" %}>
+        {% csrf_token %}
+        <input type="text" name="adm_no" placeholder="Search Adm Number" title="Enter Adm Number">
+        <button type="submit" title="Search"><i class="bi bi-search"></i></button>
+      </form>
+    </div><!-- End Search Bar -->
+    {% endif %}
+
+    <nav class="header-nav ms-auto">
+      <ul class="d-flex align-items-center">
+
+        <li class="nav-item d-block d-lg-none">
+          <a class="nav-link nav-icon search-bar-toggle " href="#">
+            <i class="bi bi-search"></i>
+          </a>
+        </li><!-- End Search Icon-->
+
+        <li class="nav-item dropdown pe-3">
+
+          <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+            <img src='{% static "img/IMG-20230825-WA0001.jpg" %}' alt="Profile" class="rounded-circle">
+            <span class="d-none d-md-block dropdown-toggle ps-2">{{ user.username }}</span>
+          </a><!-- End Profile Iamge Icon -->
+
+          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+            <li class="dropdown-header">
+              <h6>{{ user.username }}</h6>
+              {% if user.is_student %}
+              <span>Student</span>
+              {% elif user.is_teacher %}
+              <span>Teacher</span>
+              {% elif user.is_class_teacher %}
+              <span>Class Teacher</span>
+              {% elif user.is_finance %}
+              <span>Finance</span>
+              {% elif user.is_admin %}
+              <span>Admin</span>
+              {% endif %}
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li>
+                {% if user.is_student %}
+                <a class="dropdown-item d-flex align-items-center" href='{% url "student_profile" user.id %}'>
+                  <i class="bi bi-person-bounding-box"></i>
+                  <span>My Profile</span>
+                </a>
+                {% elif user.is_teacher %}
+                <a class="dropdown-item d-flex align-items-center" href='{% url "teacher_profile" user.id %}'>
+                  <i class="bi bi-person-bounding-box"></i>
+                  <span>My Profile</span>
+                </a>
+                {% elif user.is_class_teacher %}
+                <a class="dropdown-item d-flex align-items-center" href='{% url "class_teacher_profile" user.id %}'>
+                  <i class="bi bi-person-bounding-box"></i>
+                  <span>My Profile</span>
+                </a>
+                {% elif user.is_finance %}
+                <a class="dropdown-item d-flex align-items-center" href='{% url "finance_profile" user.id %}'>
+                  <i class="bi bi-person-bounding-box"></i>
+                  <span>My Profile</span>
+                </a>
+                {% elif user.is_admin %}
+                <a class="dropdown-item d-flex align-items-center" href='{% url "admin_profile" user.id %}'>
+                  <i class="bi bi-person-bounding-box"></i>
+                  <span>My Profile</span>
+                </a>
+                {% endif %}
+            </li>
+
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href='{% url "password_change" user.id %}'>
+                <i class="bi bi-hammer"></i>
+                <span>Change Password</span>
+              </a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href='{% url "contact" %}'>
+                <i class="bi bi-telephone-outbound-fill"></i>
+                <span>Need Help?</span>
+              </a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href='{% url "logout" %}'>
+                <i class="bi bi-box-arrow-right"></i>
+                <span>Logout</span>
+              </a>
+            </li>
+
+          </ul><!-- End Profile Dropdown Items -->
+        </li><!-- End Profile Nav -->
+
+      </ul>
+    </nav><!-- End Icons Navigation -->
+
+</header><!-- End Header -->
+
+<!--sidebar-->
+<aside id="sidebar" class="sidebar">
+
+    <ul class="sidebar-nav" id="sidebar-nav">
+      {% if request.user.is_student %}
+      
+      <li class="nav-item">
+        <a class="nav-link " href='{% url "dashboard" %}'>
+          <i class="bi bi-house-fill"></i>
+          <span>Dashboard</span>
+        </a>
+      </li><!-- End Dashboard Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link " href='{% url "statement" user.id %}'>
+          <i class="bi bi-currency-exchange"></i>
+          <span>Fee Statement</span>
+        </a>
+      </li><!-- End Fee statement Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link " href="">
+          <i class="bi bi-file-binary"></i>
+          <span>Fee Structure</span>
+        </a>
+      </li><!-- End Fee Structure Nav -->
+
+      {% elif request.user.is_teacher %}
+      
+      <li class="nav-item">
+        <a class="nav-link " href='{% url "dashboard" %}'>
+          <i class="bi bi-house-fill"></i>
+          <span>Dashboard</span>
+        </a>
+      </li><!-- End Dashboard Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link " href='{% url "exam" %}'>
+          <i class="bi bi-pencil-square"></i>
+          <span>Exam Room</span>
+        </a>
+      </li><!-- End Exam Room Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link " href="{% url 'student_list' %}">
+          <i class="bi bi-people-fill"></i>
+          <span>Students</span>
+        </a>
+      </li><!-- End Students Nav -->
+
+      {% elif request.user.is_class_teacher %}
+      
+      <li class="nav-item">
+        <a class="nav-link " href='{% url "dashboard" %}'>
+          <i class="bi bi-house-fill"></i>
+          <span>Dashboard</span>
+        </a>
+      </li><!-- End Dashboard Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link " href='{% url "exam" %}'>
+          <i class="bi bi-pencil-square"></i>
+          <span>Exam Room</span>
+        </a>
+      </li><!-- End Exam Room Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link " href="{% url 'student_list' %}">
+          <i class="bi bi-people-fill"></i>
+          <span>Students</span>
+        </a>
+      </li><!-- End Students Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link " href='{% url "recent_fee" %}'>
+          <i class="bi bi-cash-coin"></i>
+          <span>Fee Room</span>
+        </a>
+      </li><!-- End Fee Room Nav -->
+
+      {% elif request.user.is_finance %}
+      
+      <li class="nav-item">
+        <a class="nav-link " href='{% url "dashboard" %}'>
+          <i class="bi bi-house-fill"></i>
+          <span>Dashboard</span>
+        </a>
+      </li><!-- End Dashboard Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link " href="{% url 'student_list' %}">
+          <i class="bi bi-people-fill"></i>
+          <span>Students</span>
+        </a>
+      </li><!-- End Students Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link " href='{% url "recent_fee" %}'>
+          <i class="bi bi-cash-coin"></i>
+          <span>Fee Room</span>
+        </a>
+      </li><!-- End Fee Room Nav -->
+
+      {% elif request.user.is_admin %}
+      
+      <li class="nav-item">
+        <a class="nav-link " href='{% url "dashboard" %}'>
+          <i class="bi bi-house-fill"></i>
+          <span>Dashboard</span>
+        </a>
+      </li><!-- End Dashboard Nav -->      
+      
+      <li class="nav-item">
+        <a class="nav-link " href='{% url "course" %}'>
+          <i class="bi bi-house-fill"></i>
+          <span>Courses</span>
+        </a>
+      </li><!-- End Dashboard Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link" href='{% url "exam" %}'>
+          <i class="bi bi-pencil-square"></i>
+          <span>Exam Room</span>
+        </a>
+      </li><!-- End Exams Nav -->
+      
+      <li class="nav-item">
+        <a class="nav-link" href='{% url "exam_session" %}'>
+          <i class="bi bi-journal-plus"></i>
+          <span>Exam session</span>
+        </a>
+      </li><!-- End Exams Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link " href="{% url 'student_list' %}">
+          <i class="bi bi-people-fill"></i>
+          <span>Student list</span>
+        </a>
+      </li><!-- End My Students Nav -->
+      
+      <li class="nav-item">
+        <a class="nav-link " href="{% url 'session' %}">
+          <i class="bi bi-calendar-date"></i>
+          <span>Report Sessions</span>
+        </a>
+      </li><!-- End Report Sessions Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link " href='{% url "recent_fee" %}'>
+          <i class="bi bi-cash-coin"></i>
+          <span>Fee Room</span>
+        </a>
+      </li><!-- End Staff Nav -->
+      
+      <li class="nav-item">
+        <a class="nav-link " href='{% url "password_reset" %}'>
+          <i class="bi bi-skip-backward-circle-fill"></i>
+          <span>Reset Password</span>
+        </a>
+      </li><!-- End Notifications Nav -->
+      
+      <li class="nav-item">
+        <a class="nav-link " href='{% url "register" %}'>
+          <i class="bi bi-person-plus-fill"></i>
+          <span>Register Users</span>
+        </a>
+      </li><!-- End Register Users Nav -->
+      {% endif %}
+
+      <li class="nav-heading">Pages</li>
+      {% if user.is_student %}
+      <li class="nav-item">
+        <a class="nav-link collapsed" href='{% url "student_profile" user.id %}'>
+          <i class="bi bi-person-bounding-box"></i>
+          <span>My Profile</span>
+        </a>
+      </li><!-- End Profile Page Nav -->
+      {% elif user.is_teacher %}
+      <li class="nav-item">
+        <a class="nav-link collapsed" href='{% url "teacher_profile" user.id %}'>
+          <i class="bi bi-person-bounding-box"></i>
+          <span>My Profile</span>
+        </a>
+      </li><!-- End Profile Page Nav -->
+      {% elif user.is_class_teacher %}
+      <li class="nav-item">
+        <a class="nav-link collapsed" href='{% url "class_teacher_profile" user.id %}'>
+          <i class="bi bi-person-bounding-box"></i>
+          <span>My Profile</span>
+        </a>
+      </li><!-- End Profile Page Nav -->
+      {% elif user.is_finance %}
+      <li class="nav-item">
+        <a class="nav-link collapsed" href='{% url "finance_profile" user.id %}'>
+          <i class="bi bi-person-bounding-box"></i>
+          <span>My Profile</span>
+        </a>
+      </li><!-- End Profile Page Nav -->
+      {% elif user.is_admin %}
+      <li class="nav-item">
+        <a class="nav-link collapsed" href='{% url "admin_profile" user.id %}'>
+          <i class="bi bi-person-bounding-box"></i>
+          <span>My Profile</span>
+        </a>
+      </li><!-- End Profile Page Nav -->
+      {% endif %}
+      
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="{% url "password_change" user.id %}">
+          <i class="bi bi-hammer"></i>
+          <span>Change Password</span>
+        </a>
+      </li><!-- End Chang Password Page Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="{% url "contact" %}">
+          <i class="bi bi-telephone-outbound-fill"></i>
+          <span>Contact</span>
+        </a>
+      </li><!-- End Contact Page Nav -->
+      
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="https://milimanihighschool.co.ke/">
+          <i class="bi bi-google"></i>
+          <span>Website</span>
+        </a>
+      </li><!-- End website Page Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href={% url "logout" %}>
+          <i class="bi bi-box-arrow-right"></i>
+          <span>Logout</span>
+        </a>
+      </li><!-- End Logout Page Nav -->
+
+    </ul>
+
+ </aside><!-- End Sidebar-->
+
+ {% if messages %}
+ <div class='container mt-4 position-fixed top-0 start-50 translate-middle-x' style="z-index: 1000;py " id='alert-container'>
+   {% for message in messages %}
+   <div class='alert alert-{{ message.tags }} alert-dismissible fade show' role='alert' id='message-alert'>
+     {{ message }}
+     <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'>
+     </button>
+   </div>
+   {% endfor %}
+ </div>
+ {% endif %}
+
+ {% block content %}
+
+ {% endblock content %}
+   <div id="preloader"></div>
+ 
+   <!-- Vendor JS Files -->
+   <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+   <script src="{% static 'vendor/aos/aos.js' %}"></script>
+   <script src="{% static 'vendor/apexcharts/apexcharts.min.js' %}"></script>
+ 
+   <!-- Template Main JS File -->
+   <script src="{% static 'js/main.js' %}"></script>
+ 
+ </body>
+ 
+ </html>

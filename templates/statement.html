@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %}Fee Statement || Milimani High School{% endblock title %}
+
+{% block content %}
+
+{% if user.is_authenticated %}
+<main id="main" class="main">
+
+    <!--Page title-->
+    <div class="pagetitle">
+        <h1>Fee Statement</h1>
+        <nav>
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href='{% url "dashboard" %}'>Home</a></li>
+            <li class="breadcrumb-item active">{{student.full_name}}'s Fee statement</li>
+          </ol>
+        </nav>
+      </div><!-- End Page Title -->
+  
+      <!--Dashboard section-->
+      <div class="container">
+
+        <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
+          <div class="container">
+
+              <div class="col-xl-12 d-flex flex-column align-items-center justify-content-center">
+  
+                <div class="card" data-aos="fade-up" data-aos-delay="100">
+                  <div class="card-body">
+
+                    {% if student %}
+                    <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+        
+                      <img src='{% static "img/IMG_5688-Edit.png" %}' style='width: 120px; margin: 10px auto;' alt="Profile">
+                      <h2>Milimani High School</h2>
+                    </div>
+                    <hr>
+                    <h5 class="card-title">{{ student.full_name }} - {{ student.adm_no }} - {{ student.user_class }}</h5>
+      
+                    <!-- Table with stripped rows -->
+                    <table class="table table-striped">
+                      <thead>
+                        <tr>
+                          <th scope="col">Date</th>
+                          <th scope="col">Reference</th>
+                          <th scope="col">Amount</th>
+                          <th scope='col'></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                      {% for update in student_fees %}
+                      <tr>
+                        <th>{{ update.timestamp }}</th>
+                        <td>{{ update.ref_code }}</td>
+                        <td>
+                            {% if update.type == 'Credit' %}
+                            {{ update.amount }}
+                            {% else %}
+                            {{ update.amount }}
+                            {% endif %}
+                          </td>
+                          <td>
+                            {% if update.type == 'Credit' %}
+                            {{update.type}}
+                            {% else %}
+                            Deposit
+                            {% endif %}
+                          </td>
+                        </tr>
+                        {% empty %}
+                        <p>No fee entry to show yet</p>
+                        {% endfor %}
+                        <tr>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                        </tr>
+                        <tr>
+                          <td><b>Balance</b></td>
+                          <td></td>
+                          <td></td>
+                          <td>Ksh. {{ student.fee_balance }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+      
+                    {% endif %}
+                  </div>
+                </div>
+
+  
+              </div>
+            </div>
+          </div>
+  
+        </section>
+  
+      </div>
+
+</main><!--End #main-->
+
+<!-- ======= Footer ======= -->
+<footer id="footer" class="footer">
+    <div class="copyright">
+        &copy; Copyright <strong><span>Milimani High School</span></strong>. All Rights Reserved
+    </div>
+    <div class="credits">
+      Designed by Milimani High ICT
+    </div>
+</footer><!-- End Footer -->
+
+<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+
+{% else %}
+
+  <!--error Section-->
+  <section id="error" class="error d-flex align-items-center">
+      
+      <div class="error-info" data-aos="fade-down" data-aos-delay="300">
+          <h1>404</h1>
+          <p>Oops! you are on the wrong way buddy.</p>
+          <div class="logo">
+              <img src="{% static 'img/IMG_5688-Edit.png' %}" alt="Milimani High School">
+          </div>
+          <h2>Milimani High School</h2>
+      </div>
+
+  </section><!--End login section-->
+
+{% endif %}
+
+{% endblock content %}
