@@ -50,7 +50,7 @@ It provides functionalities for managing students, staff, courses, grades, atten
 
 ## Contributors
 
-- [WachiaLeila](https://github.com/WachiaLeila)Wachia Leila
+- [Wachia Leila](https://github.com/WachiaLeila)
 
 ## Acknowledgments
 
